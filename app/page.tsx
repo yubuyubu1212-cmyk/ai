@@ -11,11 +11,10 @@ export default function Page() {
           <h1 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl">
             처음 보는 회로도,
             <br />
-            빠르게 이해하기
+            AI로 빠르게 이해하세요.
           </h1>
           <p className="text-[15px] leading-relaxed text-pretty text-muted-foreground">
-            회로 사진이나 설명을 입력하면 주요 부품의 역할, 신호 흐름, 전체 동작 원리를
-            정리해드립니다. 전자공학을 처음 배우는 분도 쉽게 이해할 수 있도록 설명합니다.
+            회로 사진이나 설명을 입력하면 주요 부품의 역할부터 신호 흐름, 전체 동작 원리까지 정리해드립니다.
           </p>
         </div>
 
