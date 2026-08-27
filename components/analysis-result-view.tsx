@@ -35,7 +35,13 @@ function SectionCard({
   )
 }
 
-export function AnalysisResultView({ result }: { result: AnalysisResult }) {
+export function AnalysisResultView({
+  result,
+  isAiResult = false,
+}: {
+  result: AnalysisResult
+  isAiResult?: boolean
+}) {
   const { summary, summaryHighlight, parts, flow, principle, cautions, blurry } = result
 
   const summaryLead =
@@ -47,9 +53,16 @@ export function AnalysisResultView({ result }: { result: AnalysisResult }) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2.5 rounded-lg border border-border bg-success-surface px-4 py-3">
         <CircleCheck aria-hidden="true" className="size-4 shrink-0 text-success" />
-        <p className="text-sm font-medium text-foreground">
-          분석이 완료되었습니다.
-        </p>
+        <div className="flex flex-1 items-center gap-2">
+          <p className="text-sm font-medium text-foreground">
+            분석이 완료되었습니다.
+          </p>
+          {isAiResult && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+              ✨ Gemini 2.5 AI
+            </span>
+          )}
+        </div>
       </div>
 
       {blurry ? (
