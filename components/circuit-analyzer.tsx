@@ -15,6 +15,8 @@ import {
   type DemoScenario,
 } from '@/lib/mock-analysis'
 
+import { useLocalStorage } from '@/lib/use-local-storage'
+
 const STORAGE_KEY = 'circuit-analysis:last-result'
 
 type Status = 'idle' | 'loading' | 'done' | 'not-circuit' | 'failed'
@@ -29,23 +31,22 @@ export function CircuitAnalyzer() {
   const [inputError, setInputError] = React.useState<string | null>(null)
   const [scenario, setScenario] = React.useState<DemoScenario>('success')
   const [status, setStatus] = React.useState<Status>('idle')
+  const [savedResult, setSavedResult, isHydrated] = useLocalStorage<AnalysisResult | null>(
+    STORAGE_KEY,
+    null
+  )
   const [result, setResult] = React.useState<AnalysisResult | null>(null)
   const [restored, setRestored] = React.useState(false)
 
   React.useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem(STORAGE_KEY)
-      if (!saved) return
-      const parsed = JSON.parse(saved) as AnalysisResult
-      if (parsed && Array.isArray(parsed.parts)) {
-        setResult(parsed)
+    if (isHydrated && savedResult && status === 'idle' && !result) {
+      if (Array.isArray(savedResult.parts)) {
+        setResult(savedResult)
         setStatus('done')
         setRestored(true)
       }
-    } catch {
-      window.localStorage.removeItem(STORAGE_KEY)
     }
-  }, [])
+  }, [isHydrated, savedResult, status, result])
 
   React.useEffect(() => {
     return () => {
@@ -85,25 +86,21 @@ export function CircuitAnalyzer() {
       if (scenario === 'not-circuit') {
         setResult(null)
         setStatus('not-circuit')
-        window.localStorage.removeItem(STORAGE_KEY)
+        setSavedResult(null)
         return
       }
 
       if (scenario === 'failed') {
         setResult(null)
         setStatus('failed')
-        window.localStorage.removeItem(STORAGE_KEY)
+        setSavedResult(null)
         return
       }
 
       const next = getMockResult(scenario)
       setResult(next)
       setStatus('done')
-      try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-      } catch {
-        // 저장 공간을 사용할 수 없는 경우 결과만 화면에 표시합니다.
-      }
+      setSavedResult(next)
     }, 1800)
   }
 

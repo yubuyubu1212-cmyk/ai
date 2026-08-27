@@ -55,10 +55,14 @@ export function AnalysisResultView({ result }: { result: AnalysisResult }) {
       {blurry ? (
         <div className="flex items-start gap-2.5 rounded-lg border border-warning-border bg-warning-surface px-4 py-3">
           <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-warning" />
-          <p className="text-sm leading-relaxed text-warning-foreground">
-            이미지가 흐려 일부 부품은 정확히 식별되지 않았습니다. 확인된 정보만으로
-            분석한 결과입니다.
-          </p>
+          <div className="flex flex-col gap-0.5">
+            <p className="text-sm font-bold text-warning-foreground">
+              사진이 흐려 일부 부품을 정확하게 확인하기 어렵습니다.
+            </p>
+            <p className="text-sm leading-relaxed text-warning-foreground/90">
+              회로 전체가 선명하게 보이는 사진을 사용하면 더 정확한 분석이 가능합니다.
+            </p>
+          </div>
         </div>
       ) : null}
 
@@ -147,8 +151,7 @@ export function AnalysisResultView({ result }: { result: AnalysisResult }) {
           </ol>
         ) : (
           <p className="text-sm leading-relaxed text-muted-foreground">
-            입력된 정보만으로는 신호 흐름을 확인하기 어렵습니다. 회로 전체가 보이는
-            사진이나 연결 순서에 대한 설명을 추가해주세요.
+            현재 입력으로는 신호 흐름을 정확하게 판단하기 어렵습니다. 회로 전체가 보이는 사진이나 연결 순서에 대한 설명을 추가해주세요.
           </p>
         )}
       </SectionCard>
